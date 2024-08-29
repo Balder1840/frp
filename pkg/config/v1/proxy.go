@@ -225,6 +225,7 @@ const (
 	ProxyTypeSTCP   ProxyType = "stcp"
 	ProxyTypeXTCP   ProxyType = "xtcp"
 	ProxyTypeSUDP   ProxyType = "sudp"
+	ProxyTypeSocks5 ProxyType = "socks5"
 )
 
 var proxyConfigTypeMap = map[ProxyType]reflect.Type{
@@ -236,6 +237,7 @@ var proxyConfigTypeMap = map[ProxyType]reflect.Type{
 	ProxyTypeSTCP:   reflect.TypeOf(STCPProxyConfig{}),
 	ProxyTypeXTCP:   reflect.TypeOf(XTCPProxyConfig{}),
 	ProxyTypeSUDP:   reflect.TypeOf(SUDPProxyConfig{}),
+	ProxyTypeSocks5: reflect.TypeOf(Socks5ProxyConfig{}),
 }
 
 func NewProxyConfigurerByType(proxyType ProxyType) ProxyConfigurer {
@@ -459,4 +461,26 @@ func (c *SUDPProxyConfig) UnmarshalFromMsg(m *msg.NewProxy) {
 
 	c.Secretkey = m.Sk
 	c.AllowUsers = m.AllowUsers
+}
+
+var _ ProxyConfigurer = &Socks5ProxyConfig{}
+
+type Socks5ProxyConfig struct {
+	ProxyBaseConfig
+
+	RemotePort int    `json:"remotePort,omitempty"`
+	Username   string `json:"username,omitempty"`
+	Password   string `json:"password,omitempty"`
+}
+
+func (c *Socks5ProxyConfig) MarshalToMsg(m *msg.NewProxy) {
+	c.ProxyBaseConfig.MarshalToMsg(m)
+
+	m.RemotePort = c.RemotePort
+}
+
+func (c *Socks5ProxyConfig) UnmarshalFromMsg(m *msg.NewProxy) {
+	c.ProxyBaseConfig.UnmarshalFromMsg(m)
+
+	c.RemotePort = m.RemotePort
 }

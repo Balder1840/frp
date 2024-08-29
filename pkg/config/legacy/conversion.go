@@ -311,6 +311,12 @@ func Convert_ProxyConf_To_v1(conf ProxyConf) v1.ProxyConfigurer {
 		c.Secretkey = v.Sk
 		c.AllowUsers = v.AllowUsers
 		out = c
+	case *Socks5ProxyConf:
+		c := &v1.Socks5ProxyConfig{ProxyBaseConfig: *outBase}
+		c.RemotePort = v.RemotePort
+		c.Username = v.Username
+		c.Password = v.Password
+		out = c
 	}
 	return out
 }

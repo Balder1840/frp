@@ -93,6 +93,10 @@ func RegisterProxyFlags(cmd *cobra.Command, c v1.ProxyConfigurer, opts ...Regist
 	case *v1.XTCPProxyConfig:
 		cmd.Flags().StringVarP(&cc.Secretkey, "sk", "", "", "secret key")
 		cmd.Flags().StringSliceVarP(&cc.AllowUsers, "allow_users", "", []string{}, "allow visitor users")
+	case *v1.Socks5ProxyConfig:
+		cmd.Flags().IntVarP(&cc.RemotePort, "remote_port", "r", 0, "remote port")
+		cmd.Flags().StringVarP(&cc.Username, "user name", "u", "", "user name")
+		cmd.Flags().StringVarP(&cc.Password, "password", "p", "", "password")
 	}
 }
 

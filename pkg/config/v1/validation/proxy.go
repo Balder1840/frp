@@ -122,6 +122,8 @@ func ValidateProxyConfigurerForClient(c v1.ProxyConfigurer) error {
 		return validateXTCPProxyConfigForClient(v)
 	case *v1.SUDPProxyConfig:
 		return validateSUDPProxyConfigForClient(v)
+	case *v1.Socks5ProxyConfig:
+		return validateSocks5ProxyConfigForClient(v)
 	}
 	return errors.New("unknown proxy config type")
 }
@@ -165,6 +167,10 @@ func validateSUDPProxyConfigForClient(c *v1.SUDPProxyConfig) error {
 	return nil
 }
 
+func validateSocks5ProxyConfigForClient(c *v1.Socks5ProxyConfig) error {
+	return nil
+}
+
 func ValidateProxyConfigurerForServer(c v1.ProxyConfigurer, s *v1.ServerConfig) error {
 	base := c.GetBaseConfig()
 	if err := validateProxyBaseConfigForServer(base); err != nil {
@@ -188,6 +194,8 @@ func ValidateProxyConfigurerForServer(c v1.ProxyConfigurer, s *v1.ServerConfig) 
 		return validateXTCPProxyConfigForServer(v, s)
 	case *v1.SUDPProxyConfig:
 		return validateSUDPProxyConfigForServer(v, s)
+	case *v1.Socks5ProxyConfig:
+		return validateSocks5ProxyConfigForServer(v, s)
 	default:
 		return errors.New("unknown proxy config type")
 	}
@@ -235,6 +243,10 @@ func validateXTCPProxyConfigForServer(c *v1.XTCPProxyConfig, s *v1.ServerConfig)
 }
 
 func validateSUDPProxyConfigForServer(c *v1.SUDPProxyConfig, s *v1.ServerConfig) error {
+	return nil
+}
+
+func validateSocks5ProxyConfigForServer(c *v1.Socks5ProxyConfig, s *v1.ServerConfig) error {
 	return nil
 }
 

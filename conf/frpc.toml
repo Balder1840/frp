@@ -1,9 +1,40 @@
-serverAddr = "127.0.0.1"
+#serverAddr = "192.168.88.99"
+serverAddr = "10.130.70.179"
 serverPort = 7000
 
+transport.tcpMux = false
+transport.dialServerTimeout = 120
+transport.tls.enable = false
+
+log.level = "trace"
+
+# [[proxies]]
+# name = "test-tcp"
+# type = "tcp"
+# localIP = "127.0.0.1"
+# localPort = 22
+# remotePort = 6000
+
+# [[proxies]]
+# name = "dns"
+# type = "udp"
+# localIP = "114.114.114.114"
+# localPort = 53
+# remotePort = 6002
+
+
 [[proxies]]
-name = "test-tcp"
+name = "plugin_socks5"
 type = "tcp"
-localIP = "127.0.0.1"
-localPort = 22
-remotePort = 6000
+remotePort = 6005
+[proxies.plugin]
+type = "socks5"
+username = "abc"
+password = "abc"
+
+[[proxies]]
+name = "socks5_proxy"
+type = "socks5"
+remotePort = 6005
+username = "admin"
+password = "admin"

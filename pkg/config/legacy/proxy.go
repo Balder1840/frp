@@ -34,6 +34,7 @@ const (
 	ProxyTypeSTCP   ProxyType = "stcp"
 	ProxyTypeXTCP   ProxyType = "xtcp"
 	ProxyTypeSUDP   ProxyType = "sudp"
+	ProxyTypeSocks5 ProxyType = "socks5"
 )
 
 // Proxy
@@ -47,6 +48,7 @@ var (
 		ProxyTypeSTCP:   reflect.TypeOf(STCPProxyConf{}),
 		ProxyTypeXTCP:   reflect.TypeOf(XTCPProxyConf{}),
 		ProxyTypeSUDP:   reflect.TypeOf(SUDPProxyConf{}),
+		ProxyTypeSocks5: reflect.TypeOf(Socks5ProxyConf{}),
 	}
 )
 
@@ -369,6 +371,25 @@ func (cfg *SUDPProxyConf) UnmarshalFromIni(prefix string, name string, section *
 	}
 
 	// Add custom logic unmarshal if exists
+	return nil
+}
+
+// Socks5
+type Socks5ProxyConf struct {
+	BaseProxyConf `ini:",extends"`
+	RemotePort    int    `ini:"remote_port" json:"remote_port"`
+	Username      string `ini:"Username" json:"username,omitempty"`
+	Password      string `ini:"Password" json:"password,omitempty"`
+}
+
+func (cfg *Socks5ProxyConf) UnmarshalFromIni(prefix string, name string, section *ini.Section) error {
+	err := preUnmarshalFromIni(cfg, prefix, name, section)
+	if err != nil {
+		return err
+	}
+
+	// Add custom logic unmarshal if exists
+
 	return nil
 }
 
